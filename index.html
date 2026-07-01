@@ -172,6 +172,27 @@
             }
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var whatsappLink = document.getElementById('whatsapp-link');
+
+            if (!whatsappLink) {
+                return;
+            }
+
+            whatsappLink.addEventListener('click', function () {
+                if (typeof fbq !== 'function') {
+                    return;
+                }
+
+                fbq('track', 'Contact', {
+                    content_name: 'achadinhos da Juh',
+                    content_category: 'whatsapp_group',
+                    destination: 'https://chat.whatsapp.com/ESpm2po8CsoBCJ2LwIsoks'
+                });
+            });
+        });
+    </script>
 </head>
 <body>
     <noscript>
@@ -194,6 +215,7 @@
 
         <section class="links" aria-label="Links principais">
             <a
+                id="whatsapp-link"
                 class="link-card"
                 href="https://chat.whatsapp.com/ESpm2po8CsoBCJ2LwIsoks"
                 target="_blank"
