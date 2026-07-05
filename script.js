@@ -1,6 +1,4 @@
-﻿const siteConfig = {
-    whatsappGroupUrl: "https://chat.whatsapp.com/ESpm2po8CsoBCJ2LwIsoks"
-};
+﻿const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/ESpm2po8CsoBCJ2LwIsoks";
 
 const offers = [
     {
@@ -122,14 +120,21 @@ function renderFaq() {
 }
 
 function setupWhatsappLinks() {
-    document.querySelectorAll(".js-whatsapp").forEach((link) => {
-        link.href = siteConfig.whatsappGroupUrl;
-        link.addEventListener("click", () => {
-            if (typeof fbq === "function") {
-                fbq("track", "Contact", {
-                    content_name: "Achadinhos da Juh",
-                    content_category: "whatsapp_group",
-                    destination: siteConfig.whatsappGroupUrl
+    document.querySelectorAll('[data-track-lead="true"]').forEach((button) => {
+        button.href = WHATSAPP_GROUP_URL;
+    });
+}
+
+function setupLeadTracking() {
+    document.querySelectorAll('[data-track-lead="true"]').forEach((button) => {
+        button.addEventListener('click', function () {
+            console.log("CTA WhatsApp clicado:", button.innerText, button.href);
+
+            if (typeof fbq === 'function') {
+                fbq('track', 'Lead', {
+                    content_name: 'Clique para entrar no grupo de WhatsApp',
+                    content_category: 'Achadinhos da Juh',
+                    button_text: this.innerText.trim() || 'Botão WhatsApp'
                 });
             }
         });
@@ -139,6 +144,8 @@ function setupWhatsappLinks() {
 renderOffers();
 renderFaq();
 setupWhatsappLinks();
+setupLeadTracking();
+
 
 
 
