@@ -126,8 +126,29 @@ function setupWhatsappLinks() {
 }
 
 function setupLeadTracking() {
+    if (window.__achadinhosLeadTrackingInitialized) {
+        return;
+    }
+
+    window.__achadinhosLeadTrackingInitialized = true;
+
     document.querySelectorAll('[data-track-lead="true"]').forEach((button) => {
+        if (button.dataset.leadListenerAttached === 'true') {
+            return;
+        }
+
+        button.dataset.leadListenerAttached = 'true';
+
         button.addEventListener('click', function () {
+            const now = Date.now();
+            const lastClickAt = Number(this.dataset.lastLeadClickAt || 0);
+
+            if (now - lastClickAt < 1500) {
+                console.log("CTA WhatsApp ignorado por clique duplicado:", button.innerText, button.href);
+                return;
+            }
+
+            this.dataset.lastLeadClickAt = String(now);
             console.log("CTA WhatsApp clicado:", button.innerText, button.href);
 
             if (typeof fbq === 'function') {
@@ -145,6 +166,7 @@ renderOffers();
 renderFaq();
 setupWhatsappLinks();
 setupLeadTracking();
+
 
 
 
